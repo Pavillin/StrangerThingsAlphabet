@@ -1,3 +1,7 @@
+#include <BitVoicer11.h>
+BitVoicerSerial bvSerial = BitVoicerSerial();
+byte dataType = 4;
+
 int b1 = 12; //top row    HIGH to turn off 
 int b2 = 11; //middle row   HIGH to turn off 
 int b3 = 10; //bottom row  HIGH to turn of
@@ -13,14 +17,12 @@ int r9 = 1; //q,z
 
 
 void setup() {
+  Serial.begin(9600);
   setupLed();
 }
 
 void loop() {
-  allOff();
-  delay(500);
-  aOn();
-  delay(500);
+  serialEvent();
 }
 
 void setupLed () {
@@ -182,3 +184,46 @@ void hOn()
               digitalWrite(b3, LOW);
               digitalWrite(r9, HIGH);
             }
+
+
+void serialEvent(){
+  dataType = bvSerial.getData();
+
+  if(dataType == BV_STR){
+    if(bvSerial.strData == "youThere"){
+      allOff();
+      yOn();
+      delay(1000);
+      allOff();
+      delay(100);
+      eOn();
+      delay(1000);
+      allOff();
+      delay(1000);
+      sOn();
+      delay(1000);
+      allOff();
+    }
+    else if(bvSerial.strData == "where"){
+      allOff();
+      hOn();
+      delay(1000);
+      allOff();
+      eOn();
+      delay(1000);
+      allOff();
+      rOn();
+      delay(1000);
+      allOff();
+      eOn();
+      delay(1000);
+      allOff();
+    }
+    else if(bvSerial.strData == "test"){
+      allOff();
+      aOn();
+      delay(1000);
+      allOff();
+    }
+  }
+}
