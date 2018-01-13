@@ -1,6 +1,6 @@
-#include <BitVoicer11.h>
-BitVoicerSerial bvSerial = BitVoicerSerial();
-byte dataType = 4;
+#include <BitVoicer11.h> //BitVoicer Library
+BitVoicerSerial bvSerial = BitVoicerSerial(); //BitVoicer serial
+byte dataType = 4; //Type of data being recieved from bitvoicer
 
 int b1 = 12; //top row    HIGH to turn off 
 int b2 = 11; //middle row   HIGH to turn off 
@@ -17,14 +17,15 @@ int r9 = 1; //q,z
 
 
 void setup() {
-  Serial.begin(9600);
-  setupLed();
+  Serial.begin(9600); //Start serial port(must be the same in bitvoicer
+  setupLed(); //set all LEDs to OUTPUT
 }
 
 void loop() {
-  serialEvent();
+  serialEvent(); //loop the method that recieves commands from bitvoicer
 }
 
+//LED setup method
 void setupLed () {
   pinMode(b1, OUTPUT);
   pinMode(b2, OUTPUT);
@@ -40,6 +41,7 @@ void setupLed () {
   pinMode(r9, OUTPUT);
 }
 
+//Method to turn ALL LEDs off
 void allOff () {
   digitalWrite(b1, HIGH);
   digitalWrite(b2, HIGH);
@@ -55,6 +57,8 @@ void allOff () {
   digitalWrite(r9, LOW);
 }
 
+//Methods to turn on each letter START
+//first row
 void aOn () {
   digitalWrite(b1, LOW);
   digitalWrite(r1, HIGH);
@@ -94,6 +98,7 @@ void hOn()
   digitalWrite(b1, LOW);
   digitalWrite(r8, HIGH);
 }
+      //second row
       void iOn()
       {
         digitalWrite(b2, LOW);
@@ -139,6 +144,7 @@ void hOn()
         digitalWrite(b2, LOW);
         digitalWrite(r9, HIGH);
       }
+            //third row
             void rOn()
             {
               digitalWrite(b3, LOW);
@@ -184,27 +190,25 @@ void hOn()
               digitalWrite(b3, LOW);
               digitalWrite(r9, HIGH);
             }
+//Methods to turn on each letter END
 
-
+//Method to read commands sent from bitvoicer
 void serialEvent(){
-  dataType = bvSerial.getData();
+  dataType = bvSerial.getData(); //get the type of data being sent(string, int, byte, etc)
 
+  //if the type of data recieved is a string, do the following based on what command is attached to the string
   if(dataType == BV_STR){
-    if(bvSerial.strData == "youThere"){
+    //if the command recieved = "hiThere" do the following
+    if(bvSerial.strData == "hiThere"){
       allOff();
-      yOn();
+      hOn();
       delay(1000);
       allOff();
-      delay(100);
-      eOn();
+      iOn();
       delay(1000);
       allOff();
+      tOn();
       delay(1000);
-      sOn();
-      delay(1000);
-      allOff();
-    }
-    else if(bvSerial.strData == "where"){
       allOff();
       hOn();
       delay(1000);
@@ -216,12 +220,6 @@ void serialEvent(){
       delay(1000);
       allOff();
       eOn();
-      delay(1000);
-      allOff();
-    }
-    else if(bvSerial.strData == "test"){
-      allOff();
-      aOn();
       delay(1000);
       allOff();
     }
